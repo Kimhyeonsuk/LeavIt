@@ -1,4 +1,4 @@
-# LeavIt
+# LeavIt ( 구현 중)
 Please Leave It (안전 중고거래 서비스)  
 비대면 직거래 시스템  
 
