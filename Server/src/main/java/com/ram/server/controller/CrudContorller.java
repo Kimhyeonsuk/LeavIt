@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Component
 public abstract class CrudContorller<Req,Res,Entity> implements CrudInterface<Req,Res> {
-    @Autowired(required = true)
+    @Autowired(required =false)
     protected BaseService<Req,Res,Entity> baseService;
 
     @Override
