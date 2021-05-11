@@ -18,6 +18,7 @@ public class UserRepositoryTest extends ServerApplicationTests {
     private UserRepository userRepository;
 
     @Test
+    @Transactional
     public void create(){
         String account="Test03";
         String password="Test03";

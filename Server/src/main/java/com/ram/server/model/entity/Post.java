@@ -1,6 +1,6 @@
 package com.ram.server.model.entity;
 
-import com.ram.server.model.enumclass.UserStatus;
+import com.ram.server.model.enumclass.PostStatus;
 import lombok.*;
 import lombok.experimental.Accessors;
 import org.springframework.data.annotation.CreatedBy;
@@ -10,37 +10,30 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@ToString(exclude = {"postList"})
+@ToString(exclude = {"user"})
 @Builder
-@Accessors(chain=true)
-public class User {
+@Accessors(chain = true)
+public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String account;
+    private String title;
 
-    private String password;
+    private String content;
 
     @Enumerated(EnumType.STRING)
-    private UserStatus status; //Registered //Unregistered
+    private PostStatus status;
 
-    private String email;
-
-    private String phoneNumber;
-
-    private LocalDateTime registeredAt;
-
-    private LocalDateTime unregisteredAt;
-
+    private BigDecimal price;
     @CreatedDate
     private LocalDateTime createdAt;
 
@@ -51,16 +44,9 @@ public class User {
     private LocalDateTime updatedAt;
 
     @LastModifiedBy
-    private String updatedBy;
+    private String updatedBy;//사용자가 수정,관리자가 수정
 
-    //User : Post 1:N의 관계
-    //User의 입장에서 여러개의 게시글을 가질수 있다.
-    @OneToMany(fetch=FetchType.LAZY,mappedBy = "user")
-    private List<Post> postList;
-
-    ///User : OrderGroup  1: N의 관계
-    //USer의 입장에서는 ordergroup을 여러개 가질수있다.
-   /* @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    private List<OrderGroup> orderGroupList;*/
-
+    //Post N: 1 User
+    @ManyToOne
+    private User user;
 }

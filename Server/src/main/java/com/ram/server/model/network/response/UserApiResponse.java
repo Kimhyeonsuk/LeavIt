@@ -31,6 +31,6 @@ public class UserApiResponse {
 
     private LocalDateTime unregisteredAt;
 
-    //private List<OrderGroupApiResponse> orderGroupApiResponseList;//추가된 필드
+    private List<PostApiResponse> postApiResponseList;//추가된 필드
 }
 
