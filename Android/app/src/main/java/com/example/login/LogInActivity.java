@@ -45,14 +45,12 @@ import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 
+import retrofit2.Retrofit;
+
 public class LogInActivity extends AppCompatActivity {
     private EditText et_id, et_password;
     private Button btn_login, btn_findId, btn_findPassword, btn_register;
     private CheckBox chk_login;
-    String ID_temp = "1"; // 귀찮아서 바꿈
-    String PW_temp = "1"; // 귀찮아서 바꿈
-    //String ID_temp = "bmh1211@gmail.com"; // 임시지정한 ID
-    //String PW_temp = "1234567890"; // 임시지정한 PW
     private DBOpenHelper DB_Helper;
     private Toolbar tb_logIn;
     private SharedPreferences.Editor sp_editor_login;
@@ -69,11 +67,6 @@ public class LogInActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
-        if(!CheckPermission()){
-            Log.e("Error","Permission 요청 에러");
-        }
-
-
         // ======================= 사용할 객체들 =====================//
         et_id = (EditText) findViewById(R.id.et_id);
         et_password = (EditText) findViewById(R.id.et_password);
@@ -90,12 +83,6 @@ public class LogInActivity extends AppCompatActivity {
         Intent intent_findPassword = new Intent(this, FindPasswordActivity.class);
         Intent intent_register = new Intent(this, SignUpActivity.class);
 
-//        // =================== 내부 SQLite 사용을 위한 DB생성 ==================//
-//        // reference : https://github.com/yoondowon/InnerDatabaseSQLite/blob/master/app/src/main/java/com/example/user/innerdatabasesqlite/
-//        DB_Helper = new DBOpenHelper(this);
-//        DB_Helper.open();
-//        DB_Helper.create();
-
         // ================== 자동로그인을 위한 SharedPreference와 Editor ==============//
         sp_login = getSharedPreferences("setting", 0);
         sp_editor_login = sp_login.edit();
@@ -107,10 +94,6 @@ public class LogInActivity extends AppCompatActivity {
                 String ID = et_id.getText().toString(); // 입력된 id를 가져옴
                 String PW = et_password.getText().toString(); // 입력된 비밀번호를 가져옴
 
-                //서버와 연결 내용( 현재는 배포가 안되었으니 주석처리 )
-                //실험해 보고 싶으면 서버 실행하고 하단 LoginReqeust 함수 에서 url 아이피부분만 자기 컴퓨터 ip로 바꿔서 돌리면
-                //loginresult 변수에 Fail인지 Success인지 확인하면됨!!
-                //파라미터 세팅
                 String json="";
                 JSONObject jsonObject=new JSONObject();
                 try {
@@ -142,41 +125,6 @@ public class LogInActivity extends AppCompatActivity {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                /*if (ID_temp.equals(ID) && PW_temp.equals(PW)) {
-                    Toast.makeText(getApplicationContext(), "로그인 성공", Toast.LENGTH_SHORT).show();
-
-//                    // 안드로이드 내부 DB에 데이터 집어넣기(테스트용)
-//                    DB_Helper.open();
-//                    DB_Helper.insertColumn("방민호", "MINO", PW, "010-5014-3278", ID);
-//                    // 해당 기능은 회원가입 액티비티가 구현되면 그쪽으로 옮겨줄예정 - 로그인 액티비티에서는 테스트용도
-
-                    startActivity(intent_mainPage);
-                } else if (ID_temp.equals(ID) && !PW_temp.equals(PW)) {
-                    Toast.makeText(getApplicationContext(), "비밀번호 오류", Toast.LENGTH_SHORT).show();
-
-                    if (chk_login.isChecked() == true) {
-                        sp_editor_login.clear();
-                        sp_editor_login.commit();
-                        chk_login.setChecked(false);
-                    }
-                } else if (!ID_temp.equals(ID) && PW_temp.equals(PW)) {
-                    Toast.makeText(getApplicationContext(), "존재하지 않는 ID", Toast.LENGTH_SHORT).show();
-
-                    if (chk_login.isChecked() == true) {
-                        sp_editor_login.clear();
-                        sp_editor_login.commit();
-                        chk_login.setChecked(false);
-                    }
-                } else {
-                    //Toast.makeText(getApplicationContext(),ID_temp+", "+ID+", "+PW_temp+", "+PW,Toast.LENGTH_SHORT).show();
-                    Toast.makeText(getApplicationContext(), "로그인 실패", Toast.LENGTH_SHORT).show();
-
-                    if (chk_login.isChecked() == true) {
-                        sp_editor_login.clear();
-                        sp_editor_login.commit();
-                        chk_login.setChecked(false);
-                    }
-                }*/
             }
         });
 
